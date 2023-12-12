@@ -1,0 +1,1 @@
+# Rust wrapper for Jens Bauer's lz4 decoder written in cortex-m0 assembly
