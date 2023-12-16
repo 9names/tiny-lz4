@@ -16,7 +16,9 @@ unlz4:              ldrh                r2,[r0]             /* get length of com
 .thumb_func
 unlz4_len:          push                {r4-r6,lr}          /* save r4, r5, r6 and return-address */
                     adds                r5,r2,r0            /* point r5 to end of compressed data */
-getToken:           ldrb                r6,[r0]             /* get token */
+getToken:           cmp                 r0,r5               /* check if we've reached the end of the compressed data */
+                    bge                 bye                 /* if so, don't expect match offset any more. quit now */
+                    ldrb                r6,[r0]             /* get token */
                     adds                r0,r0,#1            /* advance source pointer */
                     lsrs                r4,r6,#4            /* get literal length, keep token in r6 */
                     beq                 getOffset           /* jump forward if there are no literals */
@@ -37,7 +39,7 @@ getOffset:          ldrb                r3,[r0,#0]          /* get match offset'
                     bl                  copyData            /* copy match data (r2=src, r1=dst, r4=len) */
                     cmp                 r0,r5               /* check if we've reached the end of the compressed data */
                     blt                 getToken            /* if not, go get the next token */
-                    pop                 {r4-r6,pc}          /* restore r4, r5 and r6, then return */
+bye:                pop                 {r4-r6,pc}          /* restore r4, r5 and r6, then return */
 
 .thumb_func
 getLength:          cmp                 r4,#0x0f            /* if length is 15, then more length info follows */
