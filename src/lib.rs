@@ -25,6 +25,10 @@ extern "C" {
 
 pub fn lz4decode(src: &[u8], dst: &mut [u8]) {
     unsafe {
-        unlz4_len(ptr::addr_of!(src[0]), ptr::addr_of_mut!(dst[0]), src.len() as u32);
+        unlz4_len(
+            ptr::addr_of!(src[0]),
+            ptr::addr_of_mut!(dst[0]),
+            src.len() as u32,
+        );
     }
 }
