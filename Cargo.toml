@@ -7,3 +7,6 @@ build = "build.rs"
 
 [dependencies]
 twox-hash = { version = "1.6.3" }
+
+[dev-dependencies]
+lz4_flex = "0.11"
